@@ -1,7 +1,9 @@
 digraph uni {
+	node [shape=plain]
 	root [label="???"]
+	
 	{%- for name, data in members.items() %}
-		{{ data.hash }} [label=<<table cellborder="0">{% if data.has_img %}<tr><td width="150" height="150" fixedsize="true"><img src="img/{{data.hash}}.jpg" scale="true" /></td></tr>{% endif %}<tr><td>{{name}}</td></tr><tr><td>набор {{data.year}}</td></tr><tr><td>{{status}}</td></tr></table>> shape=plain];
+		{{ data.hash }} [label=<<table bgcolor="mediumpurple1" color="white" style="rounded" cellborder="0">{% include 'image.jinja.dot' with context %}<tr><td>{{name}}</td></tr><tr><td>набор {{data.year}}</td></tr><tr><td>{{status}}</td></tr></table>>];
 		{{ members[data.parent].hash if data.parent in members else "root" }} -> {{data.hash}};
 	{%- endfor %}
 	{%- for data in unkown -%}

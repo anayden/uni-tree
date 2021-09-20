@@ -9,7 +9,11 @@ from pathlib import Path
 import aiohttp
 import asyncio
 
-from jinja2 import Template
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+env = Environment(
+    loader=FileSystemLoader('./templates'),
+    autoescape=select_autoescape(['html', 'xml'])
+)
 
 @dataclass
 class Member:
@@ -81,7 +85,8 @@ loop.run_until_complete(load_images())
 
 by_year = groupby(members_by_name.values(), lambda data: data.year)
 
-template = Template(open('templates/uni.jinja.dot').read())
+# template = Template(open('templates/uni.jinja.dot').read())
+template = env.get_template('uni.jinja.dot')
 with open('output/uni2.dot', 'w') as out:
     rendered = template.render(members=members_by_name, unknown=unknown, by_year=by_year)
     out.write(rendered)
