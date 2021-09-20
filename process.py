@@ -4,7 +4,7 @@ from typing import Optional, Dict
 from itertools import groupby
 import hashlib
 import logging
-from yarl import URL
+from pathlib import Path
 
 import aiohttp
 import asyncio
@@ -62,11 +62,13 @@ async def load_images():
         for _, data in members_by_name.items():
             if data.has_img:
                 try:
-                    async with session.get(data.url) as response:
-                        if response.status == 200:
-                            with open(f'img/{data.hash}.jpg', 'wb') as img_file:
-                                body = await response.read()
-                                img_file.write(body)
+                    img_path = Path(f'img/{data.hash}.jpg')
+                    if not img_path.exists():
+                        async with session.get(data.url) as response:
+                            if response.status == 200:
+                                with open(f'img/{data.hash}.jpg', 'wb') as img_file:
+                                    body = await response.read()
+                                    img_file.write(body)
                 except Exception as e:
                     logging.exception(
                         "Failed to download a file from '%s'", data.url)
