@@ -1,0 +1,17 @@
+digraph uni {
+	root [label="???"]
+	{%- for name, data in members.items() %}
+		{{ data.hash }} [label=<<table cellborder="0">{% if data.has_img %}<tr><td width="150" height="150" fixedsize="true"><img src="img/{{data.hash}}.jpg" scale="true" /></td></tr>{% endif %}<tr><td>{{name}}</td></tr><tr><td>набор {{data.year}}</td></tr><tr><td>{{status}}</td></tr></table>> shape=plain];
+		{{ members[data.parent].hash if data.parent in members else "root" }} -> {{data.hash}};
+	{%- endfor %}
+	{%- for data in unkown -%}
+		{{ data.hash }} [label="{{data.name}}"];
+	{%- endfor -%}
+	{%- for year, people in by_year -%}
+		{ rank=same; 
+		  {%- for data in people -%}
+			{{ data.hash}};
+		  {%- endfor -%}
+		}
+	{%- endfor -%}
+}

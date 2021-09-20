@@ -9,6 +9,7 @@ from pathlib import Path
 import aiohttp
 import asyncio
 
+from jinja2 import Template
 
 @dataclass
 class Member:
@@ -78,13 +79,19 @@ async def load_images():
 loop = asyncio.get_event_loop()
 loop.run_until_complete(load_images())
 
+by_year = groupby(members_by_name.values(), lambda data: data.year)
+
+template = Template(open('templates/uni.jinja.dot').read())
+with open('output/uni2.dot', 'w') as out:
+    rendered = template.render(members=members_by_name, unknown=unknown, by_year=by_year)
+    out.write(rendered)
 
 with open("output/uni.dot", "w") as out:
     out.write("digraph uni {\n")
     out.write('root [label="???"]\n')
 
     for name, data in members_by_name.items():
-        label = '<table border="0" cellborder="0">'
+        label = '<table border="0">'
         if data.has_img:
             label += f'<tr><td width="200" height="200" fixedsize="true"><img src="img/{data.hash}.jpg" scale="true" /></td></tr>'
         label += f"<tr><td>{name}</td></tr>"
@@ -99,7 +106,7 @@ with open("output/uni.dot", "w") as out:
     for data in unknown:
         out.write(f'{data.hash} [label="{data.name}"];')
 
-    for year, people in groupby(members_by_name.values(), lambda data: data.year):
+    for year, people in by_year:
         out.write("{ rank=same; \n")
         for data in people:
             out.write(f"{data.hash};\n")
