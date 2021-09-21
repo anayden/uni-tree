@@ -6,34 +6,28 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Уни-дерево</title>
-	<script src="d3v4.js"></script>
-	<script src="cola.min.js"></script>
+	<!-- <script src="d3v4.js"></script>
+	<script src="cola.min.js"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.19.1/cytoscape.min.js" integrity="sha512-REr7ZKldLo2Lx6UiQ6autPWZR+j4u1/7ElYsrcwFe3ZmT/TKXCF/vXqNP/d2BQ78k0tapdZFccpFkku9bwrS3w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.19.1/cytoscape.esm.js" integrity="sha512-+zdVFrdOUno7U+C6TJ1svuMBTkkXmNCPaZeFgK7HpR7OPXrgKr0+LBxTv3UT1mMeh582kvU4pDjKAXr4iV6LWQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+	<script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.19.1/cytoscape.umd.js" integrity="sha512-jIzm5q0z5PzXdRti6fE+TcDFDTNm/CXXPgrtA6Oof+j9ChCV/WNl87faXGB26QmLZ+bAZs9l/kQeWw1SEsDfXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="script.js"></script>
 	<style>
-		.node {
-			stroke: #fff;
-			stroke-width: 1.5px;
-			cursor: move;
-		}
 
 
-		.link {
-			stroke: #999;
-			stroke-width: 3px;
-			stroke-opacity: 1;
-		}
-
-		.label {
-			fill: white;
-			font-family: Verdana;
-			font-size: 10px;
-			text-anchor: middle;
-			cursor: move;
-		}
+		#cy {
+			width: 100%;
+			height: 100vh;
+			display: block;
+		  }
 	</style>
 </head>
 
 <body>
+	<div id="cy">
+
+	</div>
 
 </body>
 
