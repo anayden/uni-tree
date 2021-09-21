@@ -5,6 +5,8 @@ from itertools import groupby
 import hashlib
 import logging
 from pathlib import Path
+from PIL import Image
+from resizeimage import resizeimage
 
 import aiohttp
 import asyncio
@@ -73,9 +75,13 @@ async def load_images():
                     if not img_path.exists():
                         async with session.get(data.url) as response:
                             if response.status == 200:
-                                with open(f"img/{data.hash}.jpg", "wb") as img_file:
-                                    body = await response.read()
-                                    img_file.write(body)
+                                img_bytes = await response.read()
+                                with open(img_path, 'wb') as f:
+                                    f.write(img_bytes)
+                                with open(img_path, 'r+b') as f:
+                                    with Image.open(f) as image:
+                                        resized_image = resizeimage.resize_thumbnail(image, [150, 150]).convert("RGB")
+                                        resized_image.save(img_path, image.format)
                 except Exception as e:
                     logging.exception("Failed to download a file from '%s'", data.url)
 
@@ -85,7 +91,6 @@ loop.run_until_complete(load_images())
 
 by_year = groupby(members_by_name.values(), lambda data: data.year)
 
-# template = Template(open('templates/uni.jinja.dot').read())
 template = env.get_template('uni.jinja.dot')
 with open('output/uni2.dot', 'w') as out:
     rendered = template.render(members=members_by_name, unknown=unknown, by_year=by_year)
